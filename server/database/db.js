@@ -10,6 +10,7 @@ const db = new Sequelize(
   {
     host: process.env.HOST,
     dialect: "postgres",
+    logging: false,
   }
 );
 

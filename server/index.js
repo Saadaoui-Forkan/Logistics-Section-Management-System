@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import router from "./routes/index.js";
+import userRoute from "./routes/userRoute.js";
 import morgan from "morgan";
 import cors from "cors";
 import db from "./database/db.js";
@@ -13,8 +13,10 @@ const app = express();
 
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.json())
 
-app.use("/", router);
+// routes
+app.use("/api/user", userRoute)
 
 db.sync({ alter: true }).then(() => {
   app.listen(port, () => {

@@ -2,7 +2,6 @@ import { Sequelize } from "sequelize";
 import db from "../database/db.js";
 import models from "./index.js";
 
-
 const Vehicle = db.define('Vehicle', {
     id: {
         type: Sequelize.INTEGER,

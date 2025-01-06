@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../database/db.js";
 
-
 const Tracking = db.define('Tracking', {
     id: {
         type: Sequelize.INTEGER,

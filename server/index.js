@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json())
 
 // routes
-app.use("/api/user", userRoute)
+app.use("/api/users", userRoute)
 
 db.sync({ alter: true }).then(() => {
   app.listen(port, () => {

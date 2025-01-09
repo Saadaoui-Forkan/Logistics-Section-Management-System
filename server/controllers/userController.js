@@ -1,11 +1,11 @@
 import models from "../models/index.js";
 import bcrypt from "bcryptjs";
-import { accessToken, generateToken } from "../utils/generateToken.js";
+import { generateToken } from "../utils/generateToken.js";
 import { registerUserSchema } from "../utils/validationSchema.js";
 
 /***
  * @desc    Register New User
- * @route   /api/user/register
+ * @route   /api/users/register
  * @method  POST
  * @access  public
 */
@@ -38,13 +38,7 @@ export const register = async (req, res) => {
       role: user.role,
     });
 
-    const token = accessToken({
-      id: user.id,
-      role: user.role,
-    });
-
     res.status(201).json({
-      token,
       data: { role: user.role, unique_identifier: user.unique_identifier },
     });
   } catch (err) {
@@ -56,7 +50,7 @@ export const register = async (req, res) => {
 
 /***
  * @desc    Login User
- * @route   /api/user/login
+ * @route   /api/users/login
  * @method  POST
  * @access  public
 */
@@ -69,20 +63,14 @@ export const login = async (req, res) => {
         unique_identifier,
       },
     });
-    
+
     if (user && bcrypt.compareSync(password, user.password)) {
       generateToken(res, {
         id: user.id,
         role: user.role,
       });
 
-      const token = accessToken({
-        id: user.id,
-        role: user.role,
-      });
-
       res.status(200).json({
-        token,
         data: {
           role: user.role,
           unique_identifier: user.unique_identifier,
@@ -101,17 +89,45 @@ export const login = async (req, res) => {
   }
 };
 
-/***
+/**
  * @desc    Logout User
- * @route   /api/user/logout
+ * @route   /api/users/logout
  * @method  POST
  * @access  public
 */
 export const logout = async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0)
-  })
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
 
-  res.status(200).json({ message: "Logged out successfully" })
-}
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};
+
+/**
+ * @desc    Get All Users
+ * @route   /api/users
+ * @method  POST
+ * @access  public
+*/
+export const getUsers = async (req, res) => {
+  try {
+    const users = await models.User.findAll();
+    if (!users) {
+      res.status(404).json({ message: "Users Not Found" })
+    }
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+    });
+  }
+};

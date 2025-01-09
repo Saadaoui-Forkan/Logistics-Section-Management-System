@@ -19,3 +19,23 @@ export const authenticated = async (req, res, next) => {
         })
     }
 }
+
+export const admin = async(req, res) => {
+    authenticated(req, res, () => {
+        if (req.user.role === "Admin") {
+            next()
+        } else {
+            return res.status(403).json({ message: "Access restricted to Admin only." })
+        }
+    })
+}
+
+export const adminAndHRAdministrator = async(req, res, next) => {
+    authenticated(req, res, () => {
+        if (req.user.role === "Admin" || req.user.role === "HR Administrator") {
+            next()
+        } else {
+            return res.status(403).json({ message: "Access restricted to Admin or HR Administrator." })
+        }
+    })
+}

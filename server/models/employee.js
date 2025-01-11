@@ -59,7 +59,7 @@ const Employee = db.define('Employee', {
 
 Employee.associte = models => {
     Employee.hasMany(models.Vehicle)
-    Employee.hasOne(models.User)
+    Employee.belongsTo(models.User)
 }
 
 export default Employee;

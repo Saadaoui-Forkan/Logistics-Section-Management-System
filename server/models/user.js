@@ -24,7 +24,7 @@ const User = db.define('User', {
 })
 
 User.associte = models => {
-    User.belongsTo(models.Employee)
+    User.hasMany(models.Employee)
 }
 
 export default User;

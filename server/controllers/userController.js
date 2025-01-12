@@ -2,6 +2,7 @@ import models from "../models/index.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { registerUserSchema } from "../utils/validationSchema.js";
+import { validateData } from "../utils/common.js";
 
 /***
  * @desc    Register New User
@@ -12,12 +13,14 @@ import { registerUserSchema } from "../utils/validationSchema.js";
 export const register = async (req, res) => {
   try {
     const { unique_identifier, role, password } = req.body;
-    const validation = registerUserSchema.safeParse(req.body);
-    if (!validation.success) {
-      return res
-        .status(400)
-        .json({ message: validation.error.issues.map((err) => err.message) });
-    }
+    // const validation = registerUserSchema.safeParse(req.body);
+    // if (!validation.success) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: validation.error.issues.map((err) => err.message) });
+    // }
+    const validationPassed = validateData(registerUserSchema, req, res)
+    if (!validationPassed) return;
 
     const userExist = await models.User.findOne({
       where: { unique_identifier },

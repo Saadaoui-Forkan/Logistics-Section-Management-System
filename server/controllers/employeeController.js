@@ -1,12 +1,13 @@
 import { Op } from "sequelize";
 import models from "../models/index.js";
 import { addEmployeeSchema } from "../utils/validationSchema.js";
+import { handleError, validateData } from "../utils/common.js";
 
 /***
  * @desc    Get All Employees
  * @route   /api/employees
  * @method  GET
- * @access  private (only authenticated user)
+ * @access  private (only authenticated users are allowed)
 */
 export const getEmployees = async(req, res) => {
     try {
@@ -16,10 +17,7 @@ export const getEmployees = async(req, res) => {
         }
         res.status(200).json(employees)
     } catch (err) {
-        res.status(500).json({
-            message: "Internal Server Error",
-            error: err.message
-        })
+        handleError(res, err)
     }
 }
 
@@ -46,14 +44,16 @@ export const addEmployee = async (req, res) => {
       department,
       comments,
     } = req.body;
-    const validation = addEmployeeSchema.safeParse(req.body);
-    if (!validation.success) {
-      return res.status(400).json({
-        message: validation.error.issues.map(
-          (err) => `${err.path}: ${err.message}`
-        ),
-      });
-    }
+    // const validation = addEmployeeSchema.safeParse(req.body);
+    // if (!validation.success) {
+    //   return res.status(400).json({
+    //     message: validation.error.issues.map(
+    //       (err) => `${err.path}: ${err.message}`
+    //     ),
+    //   });
+    // }
+    const validationPassed = validateData(addEmployeeSchema, req, res)
+    if (!validationPassed) return;
 
     const employee = await models.Employee.findOne({
       where: {
@@ -85,9 +85,25 @@ export const addEmployee = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: err.message,
-    });
+    handleError(res, err)
   }
 };
+
+/***
+ * @desc    Get Employee By Id
+ * @route   /api/employees/:id
+ * @method  GET
+ * @access  private (only authenticated users are allowed)
+*/
+export const getEmployeeById = async(req, res) => {
+    try {
+        const { id } = req.params
+        const employee = await models.Employee.findOne({ where: {id: parseInt(id)} })
+        if(!employee) {
+            return res.status(400).json({ message: "Employee Not Founded!" })
+        }
+        res.status(200).json({ employee })
+    } catch (err) {
+        handleError(res, err)
+    }
+}

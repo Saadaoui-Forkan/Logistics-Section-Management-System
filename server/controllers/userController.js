@@ -2,7 +2,7 @@ import models from "../models/index.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { registerUserSchema } from "../utils/validationSchema.js";
-import { validateData } from "../utils/common.js";
+import { handleError, validateData } from "../utils/common.js";
 
 /***
  * @desc    Register New User
@@ -45,9 +45,7 @@ export const register = async (req, res) => {
       data: { role: user.role, unique_identifier: user.unique_identifier },
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    handleError(res, err)
   }
 };
 
@@ -85,10 +83,7 @@ export const login = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: err.message,
-    });
+    handleError(res, err)
   }
 };
 
@@ -107,10 +102,7 @@ export const logout = async (req, res) => {
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: err.message,
-    });
+    handleError(res, err)
   }
 };
 
@@ -128,9 +120,6 @@ export const getUsers = async (req, res) => {
     }
     res.status(200).json(users);
   } catch (err) {
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: err.message,
-    });
+    handleError(res, err)
   }
 };

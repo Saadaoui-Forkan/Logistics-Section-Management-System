@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 import models from "../models/index.js";
-import { addEmployeeSchema } from "../utils/validationSchema.js";
+import { addEmployeeSchema, addEmployeeStatusSchema } from "../utils/validationSchema.js";
 import { handleError, validateData } from "../utils/common.js";
 
 /***
@@ -42,16 +42,9 @@ export const addEmployee = async (req, res) => {
       date_of_birth,
       position,
       department,
+      hire_date,
       comments,
     } = req.body;
-    // const validation = addEmployeeSchema.safeParse(req.body);
-    // if (!validation.success) {
-    //   return res.status(400).json({
-    //     message: validation.error.issues.map(
-    //       (err) => `${err.path}: ${err.message}`
-    //     ),
-    //   });
-    // }
     const validationPassed = validateData(addEmployeeSchema, req, res)
     if (!validationPassed) return;
 
@@ -76,6 +69,7 @@ export const addEmployee = async (req, res) => {
         date_of_birth,
         position,
         department,
+        hire_date,
         comments,
         UserId: user.id,
       });
@@ -106,4 +100,65 @@ export const getEmployeeById = async(req, res) => {
     } catch (err) {
         handleError(res, err)
     }
+}
+
+/***
+ * @desc    Add An Employee Status
+ * @route   /api/employees/:id/add-status
+ * @method  POST
+ * @access  private (only Admin or HR Administrator)
+*/
+export const addAnEmployeeStatus = async(req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await models.Employee.findOne({ where: {id: parseInt(id)} })
+    if (!employee) return res.status(404).json({ message: "Employee Not Founded!" })
+
+    const user = await models.User.findOne({ where: { id: req.user.id } })
+    if(!user) return res.status(404).json({ message: "User Not Founded!" })
+
+    const { status, from, to, notes } = req.body
+    const validationPassed = validateData(addEmployeeStatusSchema, req, res)
+    if (!validationPassed) return
+
+    const newStatus = await models.EmployeeStatus.create({
+      status,
+      from,
+      to,
+      notes,
+      EmployeeId: id
+    })
+
+    res.status(200).json({ message: "Status Added Successfully", data: newStatus })
+  } catch (err) {
+    handleError(res, err)
+  }
+}
+
+/***
+ * @desc    Get An Employee Statuses
+ * @route   /api/employees/:id/status
+ * @method  GET
+ * @access  private (only Admin or HR Administrator)
+*/
+export const getEmployeeStatuses = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await models.Employee.findOne({ where: {id: parseInt(id)} })
+    if (!employee) return res.status(404).json({ message: "Employee Not Founded!" })
+
+    const user = await models.User.findOne({ where: { id: req.user.id } })
+    if(!user) return res.status(404).json({ message: "User Not Founded!" })
+
+    const statuses = await models.EmployeeStatus.findAll({
+      where: {
+        EmployeeId: id,
+      },
+      order: [["from", "ASC"]]
+    })
+
+    res.status(200).json(statuses)
+  } catch (err) {
+    handleError(res, err)
+  }
 }

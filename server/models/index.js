@@ -4,11 +4,13 @@ import User from "./user.js";
 import Vehicle from "./vehicle.js";
 import Employee from "./employee.js";
 import Tracking from "./tracking.js";
+import EmployeeStatus from "./employeeStatus.js";
 
 const models = {
     User: User,
     Vehicle: Vehicle,
     Employee: Employee,
+    EmployeeStatus: EmployeeStatus,
     Tracking: Tracking,
 }
 

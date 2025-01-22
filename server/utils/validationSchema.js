@@ -30,3 +30,14 @@ export const addEmployeeSchema = z.object({
     position: z.string().min(4),
     department: z.string().min(4),
 })
+
+export const addEmployeeStatusSchema = z
+  .object({
+    status: z.enum(["Active", "Paid Leave", "Unpaid Leave", "Absent"]),
+    from: z.coerce.date(), 
+    to: z.coerce.date(),
+  })
+  .refine((data) => data.to >= data.from, {
+    message: "'to' must be after 'from'",
+    path: ["to"],
+  });

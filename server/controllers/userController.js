@@ -66,7 +66,7 @@ export const login = async (req, res) => {
     });
 
     if (user && bcrypt.compareSync(password, user.password)) {
-      generateToken(res, {
+      const token = generateToken(res, {
         id: user.id,
         role: user.role,
       });
@@ -76,6 +76,7 @@ export const login = async (req, res) => {
           role: user.role,
           unique_identifier: user.unique_identifier,
         },
+        token
       });
     } else {
       return res.status(400).json({

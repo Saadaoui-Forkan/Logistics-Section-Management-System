@@ -14,4 +14,5 @@ export const generateToken = (res, userInfo) => {
     sameSite: "none",
     maxAge: 24 * 60 * 60 * 1000,
   });
+  return accessToken
 };

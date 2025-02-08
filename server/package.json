@@ -1,5 +1,5 @@
 {
-  "name": "Logistics_Section_Management_System",
+  "name": "logistics_section_management_system",
   "version": "1.0.0",
   "description": "Modern logistic management system for centralizing employee and vehicle data with real-time tracking.",
   "main": "index.js",

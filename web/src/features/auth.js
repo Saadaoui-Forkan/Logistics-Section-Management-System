@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginApi } from "../api/userApi";
+import { loginApi, registerApi } from "../api/userApi";
 
 export const useLoginMutation = () => {
     return useMutation({
@@ -8,12 +8,9 @@ export const useLoginMutation = () => {
     });
 };
 
-/**
- * export const useLoginMutation = () => {
-    const {isPending, mutate} useMutation({
-      mutationFn: async (data) => await loginApi(data),
-      onSuccess: (data) => localStorage.setItem("token", data.token),
-    });
-    return {isPending, mutate}
+export const useRegisterMutation = () => {
+  return useMutation({
+    mutationFn: async (data) => await registerApi(data),
+    onSuccess: (data) => localStorage.setItem("token", data.token),
+  });
 };
- */

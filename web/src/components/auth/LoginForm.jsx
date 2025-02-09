@@ -33,7 +33,7 @@ const LoginForm = () => {
             type="unique_identifier"
             id="unique_identifier"
             value={unique_identifier}
-            onChange={(e) => setUnique_identifier(e.target.value)}
+            onChange={(e) => setUnique_identifier(parseInt(e.target.value) || "")}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             placeholder="Enter your email"
           />

@@ -11,3 +11,15 @@ export const loginApi = async(data) => {
         throw error.response.data.message
     }
 }
+
+export const registerApi = async (data) => {
+    try {
+        const res = await axios.post(
+            `${process.env.REACT_APP_USER_URL}/register`,
+            data
+          );
+          return res.data;
+    } catch (error) {
+        throw error.response.data.message
+    }
+}

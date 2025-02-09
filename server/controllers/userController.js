@@ -13,12 +13,6 @@ import { handleError, validateData } from "../utils/common.js";
 export const register = async (req, res) => {
   try {
     const { unique_identifier, role, password } = req.body;
-    // const validation = registerUserSchema.safeParse(req.body);
-    // if (!validation.success) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: validation.error.issues.map((err) => err.message) });
-    // }
     const validationPassed = validateData(registerUserSchema, req, res)
     if (!validationPassed) return;
 

@@ -1,28 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRegisterMutation } from "../../features/auth";
 import Spinner from "../spinner";
 import { useNavigate } from "react-router-dom";
 import Alert from "../error";
+import useForm from "../../hooks/useForm";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [unique_identifier, setUnique_identifier] = useState();
-  const [role, setRole] = useState("");
-  const [password, setPassword] = useState("");
+
+  const { formData, handleChange } = useForm({
+    unique_identifier: "",
+    role: "",
+    password: "",
+  }, ["unique_identifier"])
 
   const { mutate, isPending, isError, error } = useRegisterMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     mutate(
-      { unique_identifier, role, password },
+      formData,
       { onSuccess: () => navigate("/dashboard") }
     );
   };
   return (
     <>
       {isError && <Alert message={error} />}
-      <form className="space-y-6" onSubmit={submitHandler}>
+      <form className="space-y-6 mx-1" onSubmit={submitHandler}>
         <div>
           <label
             htmlFor="unique_identifier"
@@ -33,10 +37,11 @@ const RegisterForm = () => {
           <input
             type="unique_identifier"
             id="unique_identifier"
-            value={unique_identifier}
-            onChange={(e) => setUnique_identifier(parseInt(e.target.value) || "")}
+            name="unique_identifier"
+            value={formData.unique_identifier}
+            onChange={handleChange}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your email"
+            placeholder="Enter your Unique Identifier"
           />
         </div>
 
@@ -50,10 +55,11 @@ const RegisterForm = () => {
           <input
             type="role"
             id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your email"
+            placeholder="Enter your Role"
           />
         </div>
 
@@ -67,10 +73,11 @@ const RegisterForm = () => {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your password"
+            placeholder="Enter your Password"
           />
         </div>
 

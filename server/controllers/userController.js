@@ -30,13 +30,15 @@ export const register = async (req, res) => {
       password: hashPassword,
     });
 
-    generateToken(res, {
+    const token = generateToken(res, {
       id: user.id,
       role: user.role,
     });
 
     res.status(201).json({
-      data: { role: user.role, unique_identifier: user.unique_identifier },
+      role: user.role, 
+      unique_identifier: user.unique_identifier,
+      token
     });
   } catch (err) {
     handleError(res, err)
@@ -66,10 +68,8 @@ export const login = async (req, res) => {
       });
 
       res.status(200).json({
-        data: {
-          role: user.role,
-          unique_identifier: user.unique_identifier,
-        },
+        role: user.role,
+        unique_identifier: user.unique_identifier,
         token
       });
     } else {

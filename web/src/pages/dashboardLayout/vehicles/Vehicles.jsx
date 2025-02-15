@@ -119,7 +119,7 @@ const Vehicles = () => {
                 <td className="text-lg border">
                   <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
                 </td>
-              </tr>mos
+              </tr>
             </tbody>
           </table>
         </div>

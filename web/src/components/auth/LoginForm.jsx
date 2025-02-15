@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Alert from "../../components/error";
 import { useLoginMutation } from "../../features/auth";
 import Spinner from "../spinner";
 import useForm from "../../hooks/useForm";
+import AppContext from "../../context/AppContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -13,12 +14,16 @@ const LoginForm = () => {
   }, ["unique_identifier"])
 
   const { mutate, isPending, isError, error } = useLoginMutation();
+  const { setCredentials } = useContext(AppContext)
 
   const submitHandler = async (e) => {
     e.preventDefault();
     mutate(
       formData,
-      { onSuccess: () => navigate("/dashboard") }
+      { onSuccess: (data) => {
+        setCredentials(data)
+        navigate('/dashboard')
+      }}
     );
   };
   return (

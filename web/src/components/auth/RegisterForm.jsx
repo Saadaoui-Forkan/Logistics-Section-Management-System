@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRegisterMutation } from "../../features/auth";
 import Spinner from "../spinner";
 import { useNavigate } from "react-router-dom";
 import Alert from "../error";
 import useForm from "../../hooks/useForm";
+import AppContext from "../../context/AppContext";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -15,12 +16,16 @@ const RegisterForm = () => {
   }, ["unique_identifier"])
 
   const { mutate, isPending, isError, error } = useRegisterMutation();
+  const { setCredentials } = useContext(AppContext)
 
   const submitHandler = async (e) => {
     e.preventDefault();
     mutate(
       formData,
-      { onSuccess: () => navigate("/dashboard") }
+      { onSuccess: (data) => {
+        setCredentials(data)
+        navigate("/dashboard")
+      }}
     );
   };
   return (

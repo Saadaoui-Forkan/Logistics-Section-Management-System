@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IoIosNotifications } from "react-icons/io";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useLogoutMutation } from "../../features/auth";
 import Spinner from "../../components/spinner";
+import AppContext from "../../context/AppContext";
 
 const TopBar = ({ open, setOpen }) => {
+  const { logout } = useContext(AppContext)
   const { mutate, isPending } = useLogoutMutation();
   const handleClick = () => {
-    mutate();
+    mutate( undefined, { onSuccess: () => logout() });
   };
   return (
     <>

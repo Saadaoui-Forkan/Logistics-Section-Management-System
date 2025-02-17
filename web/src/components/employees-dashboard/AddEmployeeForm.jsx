@@ -1,67 +1,100 @@
 import React, { useState } from "react";
+import useForm from "../../hooks/useForm";
+import { FiCamera } from "react-icons/fi";
+import { addEmployeesInputs } from "../../inputs";
 
-const AddEmployeeForm = () => {
-  const [fullName, setFullName] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [open, setOpen] = useState(false);
+const AddEmployeeForm = ({ handleOpenModal }) => {
+  const [image, setImage] = useState(null);
+  const { formData, handleChange } = useForm(
+    {
+      full_name: "",
+      unique_identifier: "",
+      phone_number: "",
+      email: "",
+      date_of_birth: "",
+      position: "",
+      department: "",
+      hire_date: "",
+      comments: "",
+    },
+    ["unique_identifier", "phone_number"]
+  );
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
   return (
-    <div className="my-3 z-30">
-      <button
-        onClick={() => setOpen(true)}
-        className={`px-4 py-2 text-white rounded ${open ? "cursor-not-allowed bg-blue-300" : "bg-blue-500"}`}
-      >
-        Add New Employee
-      </button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 p-4">
+      <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-3xl relative flex flex-col md:flex-row min-h-[60vh] max-h-[90vh] overflow-y-auto">
+        {/* Image Upload Section */}
+        <div className="flex flex-col items-center md:mr-6">
+          <label className="relative cursor-pointer w-32 h-32 flex items-center justify-center border-2 border-gray-500 rounded-xl overflow-hidden hover:border-blue-500 transition">
+            {image ? (
+              <img
+                src={image}
+                alt="Employee"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex flex-col items-center text-gray-500">
+                <FiCamera className="w-10 h-10" />
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </label>
+          <p className="text-sm text-gray-500 mt-2">Click to upload</p>
+        </div>
 
-      <div
-        className={`bg-gray-300 fixed top-12 right-0 w-72 shadow-sm p-4 transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <h2 className="text-lg font-bold mb-3">Add New Vehicle</h2>
-        <form>
-          <input
-            type="text"
-            id="fullName"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="w-full mb-3 p-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-            placeholder="Full Name"
-          />
-          <input
-            type="text"
-            id="occupation"
-            value={occupation}
-            onChange={(e) => setOccupation(e.target.value)}
-            className="w-full mb-3 p-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-            placeholder="Occupation"
-          />
-          <input
-            type=""
-            id="image"
-            value={photo}
-            onChange={(e) => setPhoto(e.target.value)}
-            className="w-full mb-3 p-2 border border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500"
-            placeholder="Plate Number"
-          />
-          <div className="flex justify-between">
-            <button
-              type="submit"
-              className="px-3 py-1 bg-green-500 text-white hover:bg-green-600"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="px-3 py-1 bg-red-500 text-white hover:bg-red-600"
-            >
-              Close
-            </button>
-          </div>
-        </form>
+        {/* Form Section */}
+        <div className="flex-1 mt-1">
+          <form>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {addEmployeesInputs.map(({ name, type, placeholder }) => (
+                <input
+                  key={name}
+                  type={type}
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500"
+                  placeholder={placeholder}
+                />
+              ))}
+            </div>
+
+            <textarea
+              name="comments"
+              value={formData.comments}
+              onChange={handleChange}
+              className="w-full mt-3 p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-gray-500"
+              placeholder="Comments"
+            />
+
+            <div className="flex justify-between mt-4">
+              <button
+                type="submit"
+                className="px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

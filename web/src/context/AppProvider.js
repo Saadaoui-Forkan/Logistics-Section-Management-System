@@ -2,9 +2,8 @@ import { useState } from "react";
 import AppContext from "./AppContext";
 
 const AppProvider = ({ children }) => {
-  const [auth, setAuth] = useState(() =>
-    JSON.parse(localStorage.getItem("user"))
-  );
+  const user = JSON.parse(localStorage.getItem("user"))
+  const [auth, setAuth] = useState(user);
 
   const setCredentials = (data) => {
     localStorage.setItem("user", JSON.stringify(data));

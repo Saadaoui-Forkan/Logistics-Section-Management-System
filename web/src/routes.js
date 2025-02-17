@@ -8,9 +8,9 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import DashboardLayout from "./pages/dashboardLayout";
 import Dashboard from "./pages/dashboardLayout/dashboard";
-import Users from "./pages/dashboardLayout/employees/Users";
+import Employees from "./pages/dashboardLayout/employees/Employees";
 import SingleEmployee from "./pages/dashboardLayout/employees/SingleEmployee";
-import UsersStatus from "./pages/dashboardLayout/employees/UsersStatus";
+import EmployeesStatus from "./pages/dashboardLayout/employees/EmployeesStatus";
 import Vehicles from "./pages/dashboardLayout/vehicles/Vehicles";
 import SingleVehicle from "./pages/dashboardLayout/vehicles/SingleVehicle";
 import VehiclesStatus from "./pages/dashboardLayout/vehicles/VehiclesStatus";
@@ -24,7 +24,6 @@ const Router = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      // element: <LoginPage />
       element: !auth ? <LoginPage /> : <Navigate to="/dashboard" />,
     },
     {
@@ -41,7 +40,7 @@ const Router = () => {
         },
         {
           path: "employees",
-          element: <Users />,
+          element: <Employees />,
         },
         {
           path: "employees/:id",
@@ -49,7 +48,7 @@ const Router = () => {
         },
         {
           path: "employees-status",
-          element: <UsersStatus />,
+          element: <EmployeesStatus />,
         },
         {
           path: "vehicles",

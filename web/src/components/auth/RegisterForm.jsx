@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from "../error";
 import useForm from "../../hooks/useForm";
 import AppContext from "../../context/AppContext";
+import { registerInputs } from "../../inputs";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -13,18 +14,18 @@ const RegisterForm = () => {
     unique_identifier: "",
     role: "",
     password: "",
-  }, ["unique_identifier"])
+  }, ["unique_identifier"]);
 
   const { mutate, isPending, isError, error } = useRegisterMutation();
-  const { setCredentials } = useContext(AppContext)
+  const { setCredentials } = useContext(AppContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     mutate(
       formData,
       { onSuccess: (data) => {
-        setCredentials(data)
-        navigate("/dashboard")
+        setCredentials(data);
+        navigate("/dashboard");
       }}
     );
   };
@@ -32,59 +33,28 @@ const RegisterForm = () => {
     <>
       {isError && <Alert message={error} />}
       <form className="space-y-6 mx-1" onSubmit={submitHandler}>
-        <div>
-          <label
-            htmlFor="unique_identifier"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Unique Identifier <span className="mr-2 text-xs text-red-600">(number)</span>
-          </label>
-          <input
-            type="unique_identifier"
-            id="unique_identifier"
-            name="unique_identifier"
-            value={formData.unique_identifier}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your Unique Identifier"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="role"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Role
-          </label>
-          <input
-            type="role"
-            id="role"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your Role"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter your Password"
-          />
-        </div>
+        {registerInputs.map((field) => (
+          <div key={field.id}>
+            <label
+              htmlFor={field.id}
+              className="block text-sm font-medium text-gray-700"
+            >
+              {field.label}{" "}
+              {field.extraText && (
+                <span className="mr-2 text-xs text-red-600">{field.extraText}</span>
+              )}
+            </label>
+            <input
+              type={field.type}
+              id={field.id}
+              name={field.name}
+              value={formData[field.name]}
+              onChange={handleChange}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              placeholder={field.placeholder}
+            />
+          </div>
+        ))}
 
         <button
           type="submit"

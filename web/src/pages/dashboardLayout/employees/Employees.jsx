@@ -3,11 +3,19 @@ import Pagination from "../../../components/pagination/Pagination";
 import AddEmployeeForm from "../../../components/employees-dashboard/AddEmployeeForm";
 import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
+import useModal from "../../../hooks/useModal";
 
-const Users = () => {
+const Employees = () => {
+  const { open, handleOpenModal } = useModal()
   return (
     <section className="container">
-      <AddEmployeeForm/>
+      {open && <AddEmployeeForm handleOpenModal={handleOpenModal} />}
+      <button
+        onClick={handleOpenModal}
+        className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 my-2 rounded-lg transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        Add New Employee
+      </button>
       <div className="w-full overflow-hidden rounded-md">
         <div className="w-full overflow-x-auto">
           <table className="w-full">
@@ -49,7 +57,12 @@ const Users = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border">6/4/2000</td>
                 <td className="text-lg border">
-                  <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
+                  <Link
+                    to={"/dashboard/employees/5"}
+                    className="flex items-center justify-center"
+                  >
+                    <IoEye />
+                  </Link>
                 </td>
               </tr>
               <tr className="text-gray-700">
@@ -81,7 +94,12 @@ const Users = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border">6/4/2000</td>
                 <td className="text-lg border">
-                  <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
+                  <Link
+                    to={"/dashboard/employees/5"}
+                    className="flex items-center justify-center"
+                  >
+                    <IoEye />
+                  </Link>
                 </td>
               </tr>
               <tr className="text-gray-700">
@@ -113,7 +131,12 @@ const Users = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border">6/4/2000</td>
                 <td className="text-lg border">
-                  <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
+                  <Link
+                    to={"/dashboard/employees/5"}
+                    className="flex items-center justify-center"
+                  >
+                    <IoEye />
+                  </Link>
                 </td>
               </tr>
               <tr className="text-gray-700">
@@ -145,7 +168,12 @@ const Users = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border">6/4/2000</td>
                 <td className="text-lg border">
-                  <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
+                  <Link
+                    to={"/dashboard/employees/5"}
+                    className="flex items-center justify-center"
+                  >
+                    <IoEye />
+                  </Link>
                 </td>
               </tr>
               <tr className="text-gray-700">
@@ -177,7 +205,12 @@ const Users = () => {
                 </td>
                 <td className="px-4 py-3 text-sm border">6/4/2000</td>
                 <td className="text-lg border">
-                  <Link to={'/dashboard/employees/5'} className="flex items-center justify-center"><IoEye/></Link>
+                  <Link
+                    to={"/dashboard/employees/5"}
+                    className="flex items-center justify-center"
+                  >
+                    <IoEye />
+                  </Link>
                 </td>
               </tr>
             </tbody>
@@ -185,14 +218,10 @@ const Users = () => {
         </div>
       </div>
       <div className="m-3 flex justify-end">
-        <Pagination 
-          pages = {5}
-          route = '/dashboard/employees'
-          pageNumber = {2}
-        />
+        <Pagination pages={5} route="/dashboard/employees" pageNumber={2} />
       </div>
     </section>
   );
 };
 
-export default Users;
+export default Employees;

@@ -31,7 +31,7 @@ const LoginForm = () => {
   };
   return (
     <>
-      {isError && <Alert message={error} />}
+      {isError && <Alert message={error} error/>}
       <form className="space-y-6" onSubmit={submitHandler}>
         {loginInputs.map(({ id, label, type, placeholder }) => (
           <div key={id}>

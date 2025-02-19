@@ -31,7 +31,7 @@ const RegisterForm = () => {
   };
   return (
     <>
-      {isError && <Alert message={error} />}
+      {isError && <Alert message={error} error/>}
       <form className="space-y-6 mx-1" onSubmit={submitHandler}>
         {registerInputs.map((field) => (
           <div key={field.id}>

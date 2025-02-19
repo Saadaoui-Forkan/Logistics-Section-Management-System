@@ -43,40 +43,50 @@ export const addEmployeesInputs = [
     name: "full_name",
     type: "text",
     placeholder: "Full Name",
+    label: "Full Name",
   },
   {
     name: "unique_identifier",
     type: "text",
     placeholder: "Unique Identifier",
+    extraText: "(number)",
+    label: "Unique Identifier"
   },
   {
     name: "phone_number",
     type: "text",
     placeholder: "Phone Number",
+    extraText: "(number)",
+    label: "Phone Number"
   },
   {
     name: "email",
     type: "email",
     placeholder: "Email",
+    label: "Email"
   },
   {
     name: "date_of_birth",
     type: "date",
-    placeholder: "",
+    placeholder: "Date Of Birth",
+    label: "Date Of Birth"
   },
   {
     name: "position",
     type: "text",
     placeholder: "Position",
+    label: "Position"
   },
   {
     name: "department",
     type: "text",
     placeholder: "Department",
+    label: "Department"
   },
   {
     name: "hire_date",
     type: "date",
-    placeholder: "",
+    placeholder: "Hire Date",
+    label: "Hire Date"
   },
 ];

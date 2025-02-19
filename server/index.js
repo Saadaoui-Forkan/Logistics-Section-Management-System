@@ -4,6 +4,7 @@ import userRoute from "./routes/userRoute.js";
 import employeeRoute from "./routes/employeeRoute.js";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import db from "./database/db.js";
 import models from "./models/index.js";
 
@@ -13,8 +14,12 @@ const port = process.env.PORT || 5001;
 const app = express();
 
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000", 
+  credentials: true, 
+}));
 app.use(express.json())
+app.use(cookieParser())
 
 // routes
 app.use("/api/users", userRoute)

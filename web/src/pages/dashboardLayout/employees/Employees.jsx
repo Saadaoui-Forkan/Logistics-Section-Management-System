@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import Pagination from "../../../components/pagination/Pagination";
 import AddEmployeeForm from "../../../components/employees-dashboard/AddEmployeeForm";
 import { Link } from "react-router-dom";
 import { IoEye } from "react-icons/io5";
 import useModal from "../../../hooks/useModal";
+import AppContext from "../../../context/AppContext";
+import Alert from "../../../components/error";
 
 const Employees = () => {
-  const { open, handleOpenModal } = useModal()
+  const { successMsg } = useContext(AppContext)
+  const { open, handleOpenModal, setOpen } = useModal()
   return (
     <section className="container">
-      {open && <AddEmployeeForm handleOpenModal={handleOpenModal} />}
+      {open && (
+        <AddEmployeeForm 
+          handleOpenModal={handleOpenModal} 
+          setOpen={setOpen} 
+        />
+      )}
+      {successMsg && <Alert message={successMsg} success/>}
       <button
         onClick={handleOpenModal}
         className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 my-2 rounded-lg transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"

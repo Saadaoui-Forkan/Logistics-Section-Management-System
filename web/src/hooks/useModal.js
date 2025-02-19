@@ -7,7 +7,7 @@ const useModal = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  return { open, handleOpenModal };
+  return { open, setOpen, handleOpenModal };
 };
 
 export default useModal;
